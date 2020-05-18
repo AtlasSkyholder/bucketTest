@@ -1,0 +1,22 @@
+{
+  "name": "buckettest",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AtlasSkyholder/bucketTest.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/AtlasSkyholder/bucketTest/issues"
+  },
+  "homepage": "https://github.com/AtlasSkyholder/bucketTest#readme",
+  "dependencies": {
+    "aws-sdk": "^2.678.0"
+  }
+}
