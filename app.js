@@ -6,6 +6,9 @@ const PORT       = process.env.PORT || 8080;
 const ENV        = process.env.ENV || "development";
 const AWS = require('aws-sdk');
 
+const express = require("express");
+const app = express();
+
 
 // Enter copied or downloaded acess ID and secret key here
 const ID = process.env.BUCKET_ID;
