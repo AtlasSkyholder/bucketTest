@@ -8,6 +8,7 @@ const AWS = require('aws-sdk');
 
 const express = require("express");
 const app = express();
+const bodyParser = require("body-parser");
 
 
 // Enter copied or downloaded acess ID and secret key here
@@ -30,12 +31,20 @@ const params = {
   }
 };
 
+app.use(bodyParser.urlencoded({extended: true}));
+app.set("view engine", "ejs");
+app.use(express.static(__dirname + "/public"));
+
 s3.createBucket(params, function(err, data){
   if (err) {
     console.log(err, err.stack);
   } else {
     console.log('Bucket Created Successfully', data.location);
   }
+});
+
+app.get("/", function(req,res){
+  res.render("index");
 });
 
 app.listen(PORT, process.env.IP, function(){
