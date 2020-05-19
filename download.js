@@ -8,26 +8,23 @@ const s3 = new AWS.S3({
   secretAccessKey: SECRET
 });
 
-const uploadFile = (fileData, fileName) => {
-  // Read content from the file
-  const fileContent = fileData;
+const downFile = ( fileName) => {
 
   // Setting up S3 upload parameters
   const params = {
     Bucket: BUCKET_NAME,
     Key: fileName, // File name you want to save as in S3
-    Body: fileContent,
-    ACL: "public-read"
   };
 
   // Uploading files to the bucket
-  s3.upload(params, function(err, data) {
+  s3.getObject(params, function(err, data) {
     if (err) {
       throw err;
     } else {
-      console.log(`File uploaded successfully. ${data.location}`);
+      console.log(data);
+
     }
   });
 };
 
-module.exports = uploadFile;
+module.exports = downFile;

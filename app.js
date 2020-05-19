@@ -10,6 +10,7 @@ const express = require("express");
 const app = express();
 const bodyParser = require("body-parser");
 const uploadFile = require("./upload.js");
+const downFile = require("./download.js");
 
 const fileUps = require('express-fileupload');
 
@@ -56,9 +57,13 @@ app.get("/bucket", function(req,res){
   res.render("bucket", {string: string});
 });
 
-app.get("/upload", function(req, res){
-  console.log(req.body);
-  // let img = req.body;
+app.get("/upload/:id", function(req, res){
+/*   const name = req.params.id;
+  const path = `https://${BUCKET_NAME}.s3.amazonaws.com/${name}`;
+
+  const thing = downFile(name);
+  console.log(thing); */
+
   res.render("download");
 });
 
@@ -80,7 +85,7 @@ app.post("/", function(req,res){
   console.log(file);
 
   uploadFile(file.data ,file.name);
-  res.redirect("upload", {item: file.name});
+  res.redirect("/upload/" + file.name);
 });
 
 app.listen(PORT, process.env.IP, function(){
