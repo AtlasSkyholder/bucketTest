@@ -60,6 +60,7 @@ app.get("/upload", function(req, res){
 });
 
 app.post("/", function(req,res){
+  console.log(req.file);
   let item = req.body.img;
   console.log(item);
   uploadFile(item);
