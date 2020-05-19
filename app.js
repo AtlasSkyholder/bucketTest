@@ -9,6 +9,7 @@ const AWS = require('aws-sdk');
 const express = require("express");
 const app = express();
 const bodyParser = require("body-parser");
+const uploadFile = require("upload.js");
 
 
 // Enter copied or downloaded acess ID and secret key here
@@ -17,6 +18,7 @@ const SECRET = process.env.BUCKET_SECRET;
 
 // The name of the bucket that you have created
 const BUCKET_NAME = process.env.BUCKET_NAME;
+const BUCKET_AREA = process.env.BUCKET_AREA;
 
 const s3 = new AWS.S3({
   accessKeyId: ID,
@@ -24,27 +26,37 @@ const s3 = new AWS.S3({
 });
 
 const params = {
-  Bucket: BUCKET_NAME,
-  CreateBucketConfiguration: {
-    // Set your region here
-    LocationConstraint: process.env.BUCKET_AREA
-  }
+  Bucket: BUCKET_NAME
 };
 
 app.use(bodyParser.urlencoded({extended: true}));
 app.set("view engine", "ejs");
 app.use(express.static(__dirname + "/public"));
 
-s3.createBucket(params, function(err, data){
-  if (err) {
-    console.log(err, err.stack);
-  } else {
-    console.log('Bucket Created Successfully', data.location);
-  }
-});
-
 app.get("/", function(req,res){
   res.render("index");
+});
+
+app.get("/bucket", function(req,res){
+
+  let string;
+
+  s3.createBucket(params, function(err, data){
+    if (err) {
+      console.log(err, err.stack);
+    } else {
+      string = data.location;
+      console.log('Bucket Created Successfully', data.location);
+    }
+  });
+
+  res.render("bucket", {string: string});
+});
+
+app.post("/upload", function(req,res){
+  let item = req.body;
+  uploadFile(item);
+  res.redirect("upload");
 });
 
 app.listen(PORT, process.env.IP, function(){
