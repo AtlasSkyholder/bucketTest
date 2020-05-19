@@ -9,7 +9,7 @@ const AWS = require('aws-sdk');
 const express = require("express");
 const app = express();
 const bodyParser = require("body-parser");
-const uploadFile = require("upload.js");
+const uploadFile = require("./upload.js");
 
 
 // Enter copied or downloaded acess ID and secret key here
@@ -53,10 +53,17 @@ app.get("/bucket", function(req,res){
   res.render("bucket", {string: string});
 });
 
-app.post("/upload", function(req,res){
-  let item = req.body;
+app.get("/upload", function(req, res){
+  console.log(req.body);
+  // let img = req.body;
+  res.render("download");
+});
+
+app.post("/", function(req,res){
+  let item = req.body.img;
+  console.log(item);
   uploadFile(item);
-  res.redirect("upload");
+  res.redirect("upload", /* {item: item} */);
 });
 
 app.listen(PORT, process.env.IP, function(){
