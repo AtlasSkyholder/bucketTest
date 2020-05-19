@@ -11,6 +11,8 @@ const app = express();
 const bodyParser = require("body-parser");
 const uploadFile = require("./upload.js");
 
+const fileUps = require('express-fileupload');
+
 
 // Enter copied or downloaded acess ID and secret key here
 const ID = process.env.BUCKET_ID;
@@ -32,6 +34,7 @@ const params = {
 app.use(bodyParser.urlencoded({extended: true}));
 app.set("view engine", "ejs");
 app.use(express.static(__dirname + "/public"));
+app.use(fileUps());
 
 app.get("/", function(req,res){
   res.render("index");
@@ -60,11 +63,24 @@ app.get("/upload", function(req, res){
 });
 
 app.post("/", function(req,res){
-  console.log(req.file);
-  let item = req.body.img;
-  console.log(item);
-  uploadFile(item);
-  res.redirect("upload", /* {item: item} */);
+  if(req.files === null) {
+    return res.status(400).json({ msg: 'No file uploaded' });
+  }
+  const file = req.files.img;
+  
+  file.mv(`${__dirname}/uploads/${file.name}`, function(err) {
+    if(err) {
+      console.error(err);
+      return res.status(500).send(err);
+    }
+    
+    
+  });
+
+  console.log(file);
+
+  uploadFile(file.data ,file.name);
+  res.redirect("upload", {item: file.name});
 });
 
 app.listen(PORT, process.env.IP, function(){

@@ -1,4 +1,3 @@
-const fs = require('fs');
 const AWS = require('aws-sdk');
 const BUCKET_NAME = process.env.BUCKET_NAME;
 const ID = process.env.BUCKET_ID;
@@ -9,9 +8,9 @@ const s3 = new AWS.S3({
   secretAccessKey: SECRET
 });
 
-const uploadFile = (fileName) => {
+const uploadFile = (fileData, fileName) => {
   // Read content from the file
-  const fileContent = fs.readFileSync(fileName);
+  const fileContent = fileData;
 
   // Setting up S3 upload parameters
   const params = {
