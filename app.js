@@ -57,7 +57,7 @@ app.get("/bucket", function(req,res){
   res.render("bucket", {string: string});
 });
 
-app.get("/upload/:id", function(req, res){
+app.get("/upload", function(req, res){
 /*   const name = req.params.id;
   const path = `https://${BUCKET_NAME}.s3.amazonaws.com/${name}`;
 
@@ -85,8 +85,20 @@ app.post("/", function(req,res){
   console.log(file);
 
   uploadFile(file.data ,file.name);
-  res.redirect("/upload/" + file.name);
+  res.redirect("/upload");
 });
+
+app.get("/list", function(req, res){
+  s3.listObjects(params, function(err, data){
+    if (err) {
+      console.log(err);
+    } else {
+      console.log(data);
+    }
+  })
+
+  res.render("list");
+})
 
 app.listen(PORT, process.env.IP, function(){
   console.log(`Example app listening on port ${PORT}`);
