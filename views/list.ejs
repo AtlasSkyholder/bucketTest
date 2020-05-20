@@ -5,5 +5,11 @@
   <body>
     <p>Bucket List</p>
     <a href="/">Go Home</a>
+
+
+    <% contents.map((item)=>{ %>
+      <p><%= item.Key %></p>
+    <% }) %>
+
   </body>
 </html>

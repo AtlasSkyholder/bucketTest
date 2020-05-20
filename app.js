@@ -89,15 +89,29 @@ app.post("/", function(req,res){
 });
 
 app.get("/list", function(req, res){
-  s3.listObjects(params, function(err, data){
-    if (err) {
-      console.log(err);
-    } else {
-      console.log(data);
-    }
+ 
+  let stuff = async () => {
+    return new Promise((resolve, reject) => {
+      s3.listObjects(params, function(err, data){
+        if (err) {
+          reject(err);
+        } else {
+          resolve(data.Contents);
+        }
+      })
+    })
+   
+  }
+
+
+  stuff().then((data) => {
+
+    const contents = data.filter((item) => {return item.Size > 0})
+
+    res.render("list", {contents: contents});
   })
 
-  res.render("list");
+  
 })
 
 app.listen(PORT, process.env.IP, function(){
